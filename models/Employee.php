@@ -57,10 +57,10 @@ class Employee extends ActiveRecord implements IdentityInterface
 
     public static function getDepartment($id)
     {
-        $dep_emp = DepartmentEmployee::find()->where(['employee_id' => $id])->one();
-        if(!$dep_emp)
+        $departmentEmployee = DepartmentEmployee::find()->where(['employee_id' => $id])->one();
+        if(!$departmentEmployee)
             return '';
-        $department = Department::findOne($dep_emp->department_id);
+        $department = Department::findOne($departmentEmployee->department_id);
         return $department->name;
     }
 
@@ -126,9 +126,9 @@ class Employee extends ActiveRecord implements IdentityInterface
 
     public static function getEmployeesDropdown()
     {
-        $dept_emp = DepartmentEmployee::find()->select('employee_id');
+        $departmentEmployee = DepartmentEmployee::find()->select('employee_id');
         $employees = Employee::find()->select('id,username')->where(['<>', 'id', 1])
-            ->andFilterWhere(['not in', 'id', $dept_emp])
+            ->andFilterWhere(['not in', 'id', $departmentEmployee])
             ->all();
 
         $employees   = ArrayHelper::map($employees, 'id', 'username');
